@@ -1,6 +1,9 @@
-const userInput = process.argv[2];
+const fs = require('fs');
+const op = process.argv[2];
+const userInput = process.argv[3];
+const argv = process.argv;
 const data = require('./data.json')
-switch (userInput) {
+switch (op) {
   case 'read':
     readEntry();
     break;
@@ -25,5 +28,11 @@ function readEntry () {
 }
 
 function addEntry () {
-  console.log('add')
+  data.notes[5] = userInput;
+  console.log(data);
+  data.nextId++;
+  const json = JSON.stringify(data, null, 2);
+  fs.writeFile('data.json', json, (err) => {
+    if (err) throw err;
+  })
 }
