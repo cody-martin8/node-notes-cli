@@ -1,8 +1,9 @@
 const fs = require('fs');
 const op = process.argv[2];
-const userInput = process.argv[3];
+// const userInput = process.argv[3];
 const argv = process.argv;
 const data = require('./data.json')
+
 switch (op) {
   case 'read':
     readEntry();
@@ -11,10 +12,11 @@ switch (op) {
       addEntry();
       break;
       case 'delete':
+        deleteEntry()
         console.log('delete')
         break;
         case 'update':
-          console.log('update')
+          updateEntry()
           break;
           default:
             console.log('invalid operation')
@@ -28,9 +30,28 @@ function readEntry () {
 }
 
 function addEntry () {
-  data.notes[5] = userInput;
-  console.log(data);
-  data.nextId++;
+  const userInput = process.argv[3];
+  data.notes[data.nextId] = userInput;
+  data.nextId += 1;
+  const json = JSON.stringify(data, null, 2);
+  fs.writeFile('data.json', json, (err) => {
+    if (err) throw err;
+  })
+}
+
+function updateEntry() {
+  const userInput = process.argv[4];
+  data.notes[process.argv[3]] = userInput;
+  data.nextId += 1;
+  const json = JSON.stringify(data, null, 2);
+  fs.writeFile('data.json', json, (err) => {
+    if (err) throw err;
+  })
+}
+
+function deleteEntry() {
+  const userInput = process.argv[3];
+  delete data.notes[userInput];
   const json = JSON.stringify(data, null, 2);
   fs.writeFile('data.json', json, (err) => {
     if (err) throw err;
