@@ -13,7 +13,6 @@ switch (op) {
       break;
       case 'delete':
         deleteEntry()
-        console.log('delete')
         break;
         case 'update':
           updateEntry()
@@ -24,8 +23,11 @@ switch (op) {
 
 
 function readEntry () {
-  for (let i = 1; i < data.nextId; i++) {
-    console.log(`${i}:`, data.notes[i]);
+  // for (let i = 1; i < data.notes.length; i++) {
+  //   console.log(`${i}:`, data.notes[i]);
+  // }
+  for (const property in data.notes) {
+    console.log(`${property}: ${data.notes[property]}`)
   }
 }
 
@@ -42,7 +44,6 @@ function addEntry () {
 function updateEntry() {
   const userInput = process.argv[4];
   data.notes[process.argv[3]] = userInput;
-  data.nextId += 1;
   const json = JSON.stringify(data, null, 2);
   fs.writeFile('data.json', json, (err) => {
     if (err) throw err;
